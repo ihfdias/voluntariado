@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Agendar Voluntariado</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Agendamento de Visita</h1>
+  <form action="agendar.php" method="POST">
+    <label>Nome do grupo:</label><br>
+    <input type="text" name="nome" required><br><br>
+
+    <label>Data da visita:</label><br>
+    <input type="date" name="data" required><br><br>
+
+    <label>Horário:</label><br>
+    <input type="time" name="hora" required><br><br>
+
+    <button type="submit">Agendar</button>
+  </form>
+
+  <br><a href="listar.php">Ver agendamentos</a>
+</body>
+</html>
