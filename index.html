@@ -1,25 +1,46 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Agendar Voluntariado</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento de Voluntariado</title>
+    <link rel="stylesheet" href="style.css"> <!-- Importando o CSS -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- Ícones -->
 </head>
 <body>
-  <h1>Agendamento de Visita</h1>
-  <form action="agendar.php" method="POST">
-    <label>Nome do grupo:</label><br>
-    <input type="text" name="nome" required><br><br>
+    <div class="formulario">
+        <h2>Agendamento de Voluntariado</h2>
+        <form action="agendar.php" method="POST">
+            <div class="input-box">
+                <input type="text" name="nome" placeholder="Nome Completo" required>
+                <i class="fas fa-user"></i>
+            </div>
 
-    <label>Data da visita:</label><br>
-    <input type="date" name="data" required><br><br>
+            <div class="input-box">
+                <input type="email" name="email" placeholder="E-mail" required>
+                <i class="fas fa-envelope"></i>
+            </div>
 
-    <label>Horário:</label><br>
-    <input type="time" name="hora" required><br><br>
+            <div class="input-box">
+                <input type="date" name="data" required>
+                <i class="fas fa-calendar-alt"></i>
+            </div>
 
-    <button type="submit">Agendar</button>
-  </form>
+            <div class="input-box">
+                <input type="time" name="hora" required>
+                <i class="fas fa-clock"></i>
+            </div>
 
-  <br><a href="listar.php">Ver agendamentos</a>
+            <div class="input-box">
+                <textarea name="mensagem" placeholder="Mensagem" rows="3" style="width: 100%; border-radius: 10px; border: 2px solid rgba(255, 255, 255, .2); padding: 10px; background-color: transparent; color: #fff;"></textarea>
+            </div>
+
+            <button type="submit" class="login">Agendar</button>
+
+            <div class="register-link">
+                <p>Já tem um agendamento? <a href="#">Verificar</a></p>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
