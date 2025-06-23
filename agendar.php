@@ -70,3 +70,5 @@ if ($stmt->execute()) {
     echo "❌ Erro ao salvar o agendamento.";
 }
 ?>
+
+

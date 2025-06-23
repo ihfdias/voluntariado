@@ -55,7 +55,7 @@ $result = $conn->query($sql);
 
         .painel {
             background-color: #222;
-            padding: 20px;
+            padding: 30px;
             border-radius: 10px;
             max-width: 1000px;
             width: 100%;

@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
                 $mail->Username = 'igorhdias97@gmail.com'; // Altere aqui
-                $mail->Password = 'kbtx irye negy tlvj'; // Altere aqui
+                $mail->Password = '$2y$10$wcfUtI4pW5uCzqtJFp005uUo0kLDFF3SV9bBJvz7sykVxuKClsZCO'; // Altere aqui
                 $mail->SMTPSecure = 'tls';
                 $mail->Port = 587;
 
