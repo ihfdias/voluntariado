@@ -1,23 +1,72 @@
 <?php
-require_once 'conexao.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-$nome = $_POST['nome'];
-$email = $_POST['email'];
-$data = $_POST['data'];
-$hora = $_POST['hora'];
-$mensagem = $_POST['mensagem'];
+require 'includes/PHPMailer/PHPMailer.php';
+require 'includes/PHPMailer/SMTP.php';
+require 'includes/PHPMailer/Exception.php';
+require 'conexao.php'; // conexão com o banco
 
-// Verifica se já existe agendamento no mesmo dia e hora
-$stmt = $db->prepare("SELECT * FROM agendamentos WHERE data = ? AND hora = ?");
-$stmt->execute([$data, $hora]);
+// Pegando dados do formulário
+$nome     = $_POST['nome'] ?? '';
+$email    = $_POST['email'] ?? '';
+$data     = $_POST['data'] ?? '';
+$hora     = $_POST['hora'] ?? '';
+$mensagem = $_POST['mensagem'] ?? '';
 
-if ($stmt->rowCount() > 0) {
-    echo "Já existe um grupo agendado nesse dia e horário.";
-    echo '<br><a href="index.html">Voltar</a>';
+// Verificar se já existe agendamento nesse horário
+$sql = "SELECT * FROM agendamentos WHERE data = ? AND hora = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $data, $hora);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+  echo "⚠️ Já existe um agendamento para esse dia e horário. Por favor, escolha outro.";
+  exit;
+}
+
+// Inserir no banco
+$sql = "INSERT INTO agendamentos (nome, email, data, hora, mensagem) VALUES (?, ?, ?, ?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("sssss", $nome, $email, $data, $hora, $mensagem);
+
+if ($stmt->execute()) {
+    // Envia e-mail de confirmação
+    $mail = new PHPMailer(true);
+
+    try {
+        // Configurações SMTP
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'igorhdias97@gmail.com'; // seu e-mail Gmail
+        $mail->Password   = 'wemp arcp zpmf aolc';       // senha gerada pelo Gmail
+        $mail->SMTPSecure = 'tls';
+        $mail->Port       = 587;
+
+        // Remetente e destinatário
+        $mail->setFrom('seuemail@gmail.com', 'Agendamento Hospital');
+        $mail->addAddress($email, $nome);
+
+        // Conteúdo do e-mail
+        $mail->isHTML(true);
+        $mail->Subject = 'Confirmação de Agendamento';
+        $mail->Body    = "
+          <h2>Olá, $nome</h2>
+          <p>Seu agendamento foi confirmado com sucesso para:</p>
+          <p><strong>Data:</strong> $data<br>
+             <strong>Horário:</strong> $hora</p>
+          <p>Mensagem enviada: <i>$mensagem</i></p>
+          <br>
+          <p>Se precisar cancelar, entre em contato conosco.</p>";
+
+        $mail->send();
+        echo "✅ Agendamento realizado e e-mail enviado com sucesso.";
+    } catch (Exception $e) {
+        echo "Agendamento salvo, mas erro ao enviar o e-mail: {$mail->ErrorInfo}";
+    }
 } else {
-    $insert = $db->prepare("INSERT INTO agendamentos (nome, email, data, hora, mensagem) VALUES (?, ?, ?, ?, ?)");
-    $insert->execute([$nome, $email, $data, $hora, $mensagem]);
-    echo "Agendamento realizado com sucesso!";
-    echo '<br><a href="index.html">Novo agendamento</a>';
+    echo "❌ Erro ao salvar o agendamento.";
 }
 ?>

@@ -1,12 +1,13 @@
 <?php
-$host = 'localhost';
-$dbname = 'voluntariado';
-$user = 'root';       // padrão do XAMPP/Laragon
-$pass = '';           // senha vazia (a menos que você tenha definido)
+$host = "localhost";
+$usuario = "root";
+$senha = "";
+$banco = "voluntariado"; // o nome que você deu ao seu banco
 
-try {
-    $db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
-} catch (PDOException $e) {
-    die("Erro na conexão: " . $e->getMessage());
+$conn = new mysqli($host, $usuario, $senha, $banco);
+
+// Verifica se deu erro
+if ($conn->connect_error) {
+    die("Erro na conexão: " . $conn->connect_error);
 }
 ?>
