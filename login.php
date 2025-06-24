@@ -1,39 +1,57 @@
 <?php
 session_start();
-require 'conexao.php';
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
+    $usuario = $_POST['usuario'] ?? '';
+    $senha = $_POST['senha'] ?? '';
 
-    $sql = "SELECT * FROM usuarios WHERE email = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $res = $stmt->get_result();
+    // Substitua pelos dados reais
+    $usuarioCorreto = 'admin';
+    $senhaCorreta = '1234';
 
-    if ($res->num_rows === 1) {
-        $usuario = $res->fetch_assoc();
-
-        if (password_verify($senha, $usuario['senha'])) {
-            $_SESSION['adm'] = $usuario['nome'];
-            header("Location: painel.php");
-            exit;
-        } else {
-            echo "❌ Senha incorreta.";
-        }
+    if ($usuario === $usuarioCorreto && $senha === $senhaCorreta) {
+        $_SESSION['adm'] = $usuario;
+        header("Location: painel.php");
+        exit;
     } else {
-        echo "❌ E-mail não encontrado.";
+        $erro = "Usuário ou senha inválidos.";
     }
 }
 ?>
 
-<!-- Formulário -->
-<form method="POST">
-    <input type="email" name="email" placeholder="E-mail" required>
-    <input type="password" name="senha" placeholder="Senha" required>
-    <button type="submit">Entrar</button>
-</form>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Administrativo</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <div class="formulario">
+    <h2>Login</h2>
+
+    <?php if (!empty($erro)): ?>
+      <p style="color: #dc3545; text-align: center; margin-bottom: 15px;"><?= htmlspecialchars($erro) ?></p>
+    <?php endif; ?>
+
+    <form method="POST" action="login.php">
+      <div class="input-box">
+        <input type="text" name="usuario" placeholder="Usuário" required>
+        <i class="fas fa-user"></i>
+      </div>
+
+      <div class="input-box">
+        <input type="password" name="senha" placeholder="Senha" required>
+        <i class="fas fa-lock"></i>
+      </div>
+
+      <button type="submit" class="login">Entrar</button>
+    </form>
+
+    <div class="register-link">
+      <a href="index.html">Voltar</a>
+    </div>
+  </div>
+</body>
+</html>

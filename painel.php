@@ -43,6 +43,7 @@ $result = $conn->query($sql);
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Painel Administrativo</title>
@@ -59,7 +60,7 @@ $result = $conn->query($sql);
             border-radius: 10px;
             max-width: 1000px;
             width: 100%;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             margin-top: 30px;
         }
 
@@ -72,7 +73,8 @@ $result = $conn->query($sql);
             overflow: hidden;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px;
             border-bottom: 1px solid #444;
             text-align: left;
@@ -93,8 +95,13 @@ $result = $conn->query($sql);
             font-size: 14px;
         }
 
-        a.btn.delete { background-color: #dc3545; }
-        a.btn.done { background-color: #17a2b8; }
+        a.btn.delete {
+            background-color: #dc3545;
+        }
+
+        a.btn.done {
+            background-color: #17a2b8;
+        }
 
         .top-bar {
             display: flex;
@@ -107,8 +114,49 @@ $result = $conn->query($sql);
             color: #00aaff;
             text-decoration: none;
         }
+
+        .form-busca {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-busca input[type="text"],
+        .form-busca input[type="date"] {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .form-busca button {
+            background-color: #00aaff;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .form-busca button:hover {
+            background-color: #008ecc;
+        }
+
+        .form-busca .btn-link {
+            color: #00aaff;
+            text-decoration: none;
+            align-self: center;
+            font-size: 14px;
+        }
     </style>
 </head>
+
 <body>
     <div class="painel">
         <div class="top-bar">
@@ -116,11 +164,11 @@ $result = $conn->query($sql);
             <a href="logout.php">Sair</a>
         </div>
 
-        <form method="GET">
+        <form method="GET" class="form-busca">
             <input type="text" name="busca" placeholder="Buscar por nome" value="<?php echo htmlspecialchars($busca); ?>">
             <input type="date" name="data" value="<?php echo $filtroData; ?>">
             <button type="submit">Filtrar</button>
-            <a href="painel.php" style="margin-left:10px; color:#00aaff;">Limpar filtros</a>
+            <a href="painel.php" class="btn-link">Limpar filtros</a>
         </form>
 
         <h3>Agendamentos</h3>
@@ -152,4 +200,5 @@ $result = $conn->query($sql);
         </table>
     </div>
 </body>
+
 </html>
