@@ -65,7 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             width: 100%;
             border-collapse: separate;
             border-spacing: 20 20px;
-            /* Espaçamento entre as linhas */
             margin-top: 30px;
         }
 

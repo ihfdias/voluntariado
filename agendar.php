@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/vendor/autoload.php'; // Carrega todas as bibliotecas
-require 'conexao.php';                   // Sua conexão com o banco
+require __DIR__ . '/vendor/autoload.php'; 
+require 'conexao.php';                   
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -8,14 +8,14 @@ $dotenv->load();
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Pegando dados do formulário
+
 $nome     = $_POST['nome'] ?? '';
 $email    = $_POST['email'] ?? '';
 $data     = $_POST['data'] ?? '';
 $hora     = $_POST['hora'] ?? '';
 $mensagem = $_POST['mensagem'] ?? '';
 
-// Verificar se já existe agendamento nesse horário
+
 $sql = "SELECT * FROM agendamentos WHERE data = ? AND hora = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ss", $data, $hora);
@@ -27,30 +27,30 @@ if ($result->num_rows > 0) {
   exit;
 }
 
-// Inserir no banco
+
 $sql = "INSERT INTO agendamentos (nome, email, data, hora, mensagem) VALUES (?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("sssss", $nome, $email, $data, $hora, $mensagem);
 
 if ($stmt->execute()) {
-    // Envia e-mail de confirmação
+    
     $mail = new PHPMailer(true);
 
     try {
-        // Configurações SMTP
+        
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'igorhdias97@gmail.com'; // seu e-mail Gmail
-        $mail->Password   = 'wemp arcp zpmf aolc';       // senha gerada pelo Gmail
+        $mail->Username   = 'igorhdias97@gmail.com'; 
+        $mail->Password   = 'wemp arcp zpmf aolc';       
         $mail->SMTPSecure = 'tls';
         $mail->Port       = 587;
 
-        // Remetente e destinatário
+        
         $mail->setFrom('seuemail@gmail.com', 'Agendamento Hospital');
         $mail->addAddress($email, $nome);
 
-        // Conteúdo do e-mail
+        
         $mail->isHTML(true);
         $mail->Subject = 'Confirmação de Agendamento';
         $mail->Body    = "

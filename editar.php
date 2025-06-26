@@ -5,18 +5,18 @@ if (!isset($_SESSION['adm'])) {
     exit;
 }
 
-// Carrega o autoload do Composer e o .env
+
 require __DIR__ . '/vendor/autoload.php';
 require 'conexao.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-// Importa as classes do PHPMailer
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Verifica se veio o ID
+
 if (!isset($_GET['id'])) {
     echo "ID do agendamento não informado.";
     exit;
@@ -24,7 +24,7 @@ if (!isset($_GET['id'])) {
 
 $id = intval($_GET['id']);
 
-// Busca os dados do agendamento
+
 $sql = "SELECT * FROM agendamentos WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hora = $_POST['hora'];
     $mensagem = $_POST['mensagem'];
 
-    // Verifica duplicidade de data e hora
+    
     $check = $conn->prepare("SELECT id FROM agendamentos WHERE data = ? AND hora = ? AND id != ?");
     $check->bind_param("ssi", $data, $hora, $id);
     $check->execute();
@@ -60,14 +60,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $update->bind_param("sssssi", $nome, $email, $data, $hora, $mensagem, $id);
 
         if ($update->execute()) {
-            // Enviar e-mail de confirmação
+            
             $mail = new PHPMailer(true);
             try {
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
-                $mail->Username = 'igorhdias97@gmail.com'; // Altere aqui
-                $mail->Password = '$2y$10$wcfUtI4pW5uCzqtJFp005uUo0kLDFF3SV9bBJvz7sykVxuKClsZCO'; // Altere aqui
+                $mail->Username = 'igorhdias97@gmail.com'; 
+                $mail->Password = '$2y$10$wcfUtI4pW5uCzqtJFp005uUo0kLDFF3SV9bBJvz7sykVxuKClsZCO'; 
                 $mail->SMTPSecure = 'tls';
                 $mail->Port = 587;
 
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $mail->send();
             } catch (Exception $e) {
-                // Logar erro ou ignorar
+               
             }
 
             header("Location: painel.php");
