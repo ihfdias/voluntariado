@@ -5,14 +5,18 @@ if (!isset($_SESSION['adm'])) {
     exit;
 }
 
+// Carrega o autoload do Composer e o .env
+require __DIR__ . '/vendor/autoload.php';
 require 'conexao.php';
-require 'includes/PHPMailer/PHPMailer.php';
-require 'includes/PHPMailer/SMTP.php';
-require 'includes/PHPMailer/Exception.php';
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+// Importa as classes do PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+// Verifica se veio o ID
 if (!isset($_GET['id'])) {
     echo "ID do agendamento não informado.";
     exit;

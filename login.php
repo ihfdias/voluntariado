@@ -1,13 +1,20 @@
 <?php
 session_start();
 
+require __DIR__ . '/vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+$erro = "";
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'] ?? '';
     $senha = $_POST['senha'] ?? '';
 
-    // Substitua pelos dados reais
-    $usuarioCorreto = 'admin';
-    $senhaCorreta = '1234';
+    // Pegando os dados do .env
+    $usuarioCorreto = $_ENV['LOGIN_USUARIO'];
+    $senhaCorreta = $_ENV['LOGIN_SENHA'];
 
     if ($usuario === $usuarioCorreto && $senha === $senhaCorreta) {
         $_SESSION['adm'] = $usuario;

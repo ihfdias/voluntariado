@@ -1,11 +1,12 @@
 <?php
+require __DIR__ . '/vendor/autoload.php'; // Carrega todas as bibliotecas
+require 'conexao.php';                   // Sua conexão com o banco
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
-require 'includes/PHPMailer/PHPMailer.php';
-require 'includes/PHPMailer/SMTP.php';
-require 'includes/PHPMailer/Exception.php';
-require 'conexao.php'; // conexão com o banco
 
 // Pegando dados do formulário
 $nome     = $_POST['nome'] ?? '';
